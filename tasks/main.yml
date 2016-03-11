@@ -1,2 +1,15 @@
 ---
-# tasks file for insspb.postgresql
+- include: pkg-CentOs.yml
+  when: ( "{{ nginx_install_method }}" == "package"
+        and "{{ ansible_os_family }}"  == "RedHat")
+
+- include: pkg-Debian.yml
+  when: ( "{{ nginx_install_method }}" == "package"
+        and "{{ ansible_distribution }}" == "Ubuntu"
+        or "{{ ansible_distribution }}" == "Debian")
+
+- include: configure.yml
+  when: postgresql_server
+
+- include: users.yml
+  when: postgresql_server
