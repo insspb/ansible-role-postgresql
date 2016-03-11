@@ -23,7 +23,7 @@
 
 - name: PostgreSQL | Debian | Installation | Install server packages
   apt: 
-    pkg:"{{ item }}" 
+    pkg: "{{ item }}" 
     state: latest
   with_items:
     - postgresql-{{ postgresql_version }}
