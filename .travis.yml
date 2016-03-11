@@ -3,13 +3,12 @@ language: python
 python: "2.7"
 
 # Use the new container infrastructure
-sudo: false
+sudo: required
 
 # Install ansible
-addons:
-  apt:
-    packages:
-    - python-pip
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python-apt python-pycurl python-pip
 
 install:
   # Install ansible
@@ -24,6 +23,8 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+  - ansible-playbook tests/test.yml -i tests/inventory --become-method=sudo
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
