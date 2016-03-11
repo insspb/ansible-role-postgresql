@@ -1,0 +1,39 @@
+---
+- name: PostgreSQL | Debian | Installation | Add official repository
+  apt_repository: 
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' 
+    state: present
+
+- name: PostgreSQL | Debian | Installation | Add official repository key
+  apt_key: 
+    url: 'https://www.postgresql.org/media/keys/ACCC4CF8.asc' 
+    state: present
+
+- name: PostgreSQL | Debian | Installation | Updating repository cache to include new repository
+  apt: 
+    update_cache: yes
+
+- name: PostgreSQL | Debian | Installation | Install client packages
+  apt: 
+    pkg: "{{ item }}" 
+    state: latest
+  with_items:
+    - postgresql-client-{{ postgresql_version }}
+  when: postgresql_client
+
+- name: PostgreSQL | Debian | Installation | Install server packages
+  apt: 
+    pkg:"{{ item }}" 
+    state: latest
+  with_items:
+    - postgresql-{{ postgresql_version }}
+    - postgresql-contrib-{{ postgresql_version }}
+    - postgresql-server-dev-{{ postgresql_version }}
+    - postgresql-common
+    - python-pip
+    - python-dev
+    - gcc
+    - python-psycopg2
+    - postgresql
+  when: postgresql_server
+  notify: Reload Service | postgres
