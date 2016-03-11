@@ -1,0 +1,54 @@
+---
+#- name: PostgreSQL | Users configuration | Create Database User
+#  postgresql_user:
+#    state: present
+#    name: "{{ item.value.psql_database_username }}"
+#    password: "{{ item.value.psql_database_password }}"
+#    db: template1
+#    priv: CONNECT
+#    role_attr_flags: SUPERUSER
+#  when:  postgresql_server  and (postgresql_users is defined)
+#  become_user: "{{ postgresql_user }}"
+#  with_dict: "{{ postgresql_users }}"
+#  become_method: sudo
+
+- name: PostgreSQL | Users configuration | Create Database
+  postgresql_db:
+    name:"testdb1" 
+    state: present
+  become_user: postgres
+  become_method: su
+
+- name: PostgreSQL | Users configuration | Create Database
+  postgresql_db: 
+    name: "{{ item.value.psql_database_name }}" 
+    state: present
+  when: postgresql_server and (postgresql_databases is defined)
+  become_user: "{{ postgresql_user }}"
+  become_method: su
+  with_dict: "{{ postgresql_databases }}"
+
+- name: PostgreSQL | Users configuration | Create Database
+  postgresql_db:
+    state: present
+    name: "{{ item.value.psql_database_name }}"
+    owner: "{{ item.value.psql_database_owner }}"
+  when: postgresql_server and (postgresql_databases is defined)
+  become_user: "{{ postgresql_user }}"
+  become_method: sudo
+  with_dict: "{{ postgresql_databases }}"
+
+#- name: PostgreSQL | Users configuration | Create Database User
+#  postgresql_user:
+#    state: present
+#    name: "{{ database_username | default(project) }}"
+#    password: "{{ database_password | mandatory }}"
+#    db: "{{ database_name | default(project) }}"
+#    priv: ALL
+#    role_attr_flags: CREATEDB
+#  when: postgresql_server and (postgresql_users is defined)
+#  become_user: "{{ postgresql_user }}"
+#  become_method: sudo
+#  with_dict: "{{ postgresql_users }}"
+
+
