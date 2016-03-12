@@ -19,3 +19,4 @@ postgresql_backup_path: /backup/postgresql
 postgresql_backup_frequency: daily
 
 
+postgresql_listen_addresses: localhost
