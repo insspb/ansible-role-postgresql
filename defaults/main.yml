@@ -18,5 +18,9 @@ postgresql_backup_enabled: no
 postgresql_backup_path: /backup/postgresql
 postgresql_backup_frequency: daily
 
+postgresql_locale_parts:
+  - 'en_US' # Locale
+  - 'UTF-8' # Encoding
+postgresql_locale: "{{ postgresql_locale_parts | join('.') }}"
 
 postgresql_listen_addresses: localhost

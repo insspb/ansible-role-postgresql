@@ -7,6 +7,10 @@
     group: staff
     mode: 0775
 
+- name: PostgreSQL | Configure | Ensure the locale is generated
+  become: yes
+  locale_gen: name="{{ postgresql_locale }}" state=present
+
 - name: PostgreSQL | Configure | pidfile
   lineinfile:
     state: present
