@@ -1,6 +1,4 @@
 ---
-- include_vars: "os_{{ ansible_os_family }}.yml"
-
 - name: PostgreSQL | Handlers | Reload Service
   service:
     state: reloaded

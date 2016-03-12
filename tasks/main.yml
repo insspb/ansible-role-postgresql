@@ -1,4 +1,6 @@
 ---
+- include_vars: "os_{{ ansible_os_family }}.yml"
+
 - include: pkg-CentOs.yml
   when: ( "{{ nginx_install_method }}" == "package"
         and "{{ ansible_os_family }}"  == "RedHat")
