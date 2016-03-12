@@ -9,7 +9,9 @@
 
 - name: PostgreSQL | Configure | Ensure the locale is generated
   become: yes
-  locale_gen: name="{{ postgresql_locale }}" state=present
+  locale_gen: 
+    name: "{{ postgresql_locale }}" 
+    state: present
 
 - name: PostgreSQL | Configure | pidfile
   lineinfile:
