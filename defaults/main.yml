@@ -24,3 +24,36 @@ postgresql_locale_parts:
 postgresql_locale: "{{ postgresql_locale_parts | join('.') }}"
 
 postgresql_listen_addresses: localhost
+
+postgresql_pg_hba_default:
+    - type: local
+      database: all
+      user: '{{ postgresql_user }}'
+      address: ''
+      method: 'trust'
+      comment: 'Local connection of postgre user, to remote management from ansible'
+    - type: local
+      database: all
+      user: all
+      address: ''
+      method: 'peer'
+      comment: '"local" is for Unix domain socket connections only'
+    - type: host
+      database: all
+      user: all
+      address: '127.0.0.1/32'
+      method: 'md5'
+      comment: 'IPv4 local connections:'
+    - type: host
+      database: all
+      user: all
+      address: '::1/128'
+      method: 'md5'
+      comment: 'IPv6 local connections:'
+
+postgresql_pg_hba_trust_hosts: []
+postgresql_pg_hba_reject_hosts: []
+postgresql_pg_hba_md5_hosts: []
+postgresql_pg_hba_passwd_hosts: []
+postgresql_pg_hba_ldap_hosts: []
+postgresql_pg_hba_custom: []
