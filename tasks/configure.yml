@@ -5,7 +5,7 @@
     state: directory
     path: "{{ postgresql_runtime_root }}"
     owner: "{{ postgresql_user }}"
-    group: staff
+    group: "{{ postgresql_user }}"
     mode: 0765
 
 - name: PostgreSQL | Configure | Ensure the locale is generated
