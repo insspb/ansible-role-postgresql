@@ -1,0 +1,25 @@
+---
+- name: PostgreSQL | Database configuration | Ensure PostgreSQL is running
+  service:
+    name: "{{ postgresql_service_name }}"
+    state: started
+
+- name: PostgreSQL | Database configuration | Create Database
+  postgresql_db:
+    name: "{{ item.name | default('newdb') }}"
+    state: "{{ item.state | default(omit) }}"
+    encoding: "{{ item.encoding | default(omit) }}"
+    lc_collate: "{{ item.lc_collate | default(omit) }}"
+    lc_ctype: "{{ item.lc_ctype | default(omit) }}"
+    login_host: "{{ item.login_host | default(omit) }}"
+    login_password: "{{ item.login_password | default(omit) }}"
+    login_unix_socket: "{{ item.login_unix_socket | default(omit) }}"
+    login_user: "{{ item.login_user | default(omit) }}"
+    owner: "{{ item.owner | default(omit) }}"
+    port: "{{ item.port | default(omit) }}"
+    template: "{{ item.template | default(omit) }}"
+  when: postgresql_server and (postgresql_databases is defined)
+  become_user: "{{ postgresql_user }}"
+  become_method: su
+  with_items: "{{ postgresql_databases }}"
+

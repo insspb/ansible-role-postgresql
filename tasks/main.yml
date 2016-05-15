@@ -1,14 +1,23 @@
 ---
+# Include vars depending of host system
 - include_vars: "os_{{ ansible_os_family }}.yml"
 
+#Installation instructions for CentOS
 - include: pkg-CentOs.yml
   when: ansible_os_family == "RedHat"
 
+#Installation instructions for Debian line
 - include: pkg-Debian.yml
   when: ansible_os_family == "Debian"
 
+#Configure server itself
 - include: configure.yml
   when: postgresql_server
 
+#Create and check users on server
 - include: users.yml
+  when: postgresql_server
+
+#Create and check databases on server
+- include: databases.yml
   when: postgresql_server
