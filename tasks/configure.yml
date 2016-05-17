@@ -67,3 +67,6 @@
     mode: 0644
     backup: yes
   notify: PostgreSQL | Handlers | Reload Service
+
+- meta: flush_handlers
+
