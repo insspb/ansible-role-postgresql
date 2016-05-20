@@ -52,7 +52,7 @@ external_pid_file = '{{ postgresql_external_pid_file }}'                        
 
 # - Connection Settings -
 
-#listen_addresses = '{{ postgresql_listen_addresses | join(',') }}'                     # what IP address(es) to listen on;
+listen_addresses = '{{ postgresql_listen_addresses | join(',') }}'                     # what IP address(es) to listen on;
                                                                                         # comma-separated list of addresses;
                                                                                         # defaults to 'localhost'; use '*' for all
 port = {{ postgresql_port }}
