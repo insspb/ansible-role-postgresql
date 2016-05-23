@@ -25,6 +25,8 @@ postgresql_locale: "{{ postgresql_locale_parts | join('.') }}"
 
 # pg_hba.conf configuration file
 
+postgresql_custom_templates: false
+
 postgresql_pg_hba_default:
     - type: local
       database: all

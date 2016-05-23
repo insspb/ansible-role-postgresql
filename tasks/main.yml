@@ -14,6 +14,10 @@
 - include: configure.yml
   when: postgresql_server
 
+#Create templates databases
+- include: database_templates.yml
+  when: postgresql_custom_templates and postgresql_server
+
 #Create and check users on server
 - include: users.yml
   when: postgresql_server

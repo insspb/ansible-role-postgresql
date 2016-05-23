@@ -1,0 +1,37 @@
+---
+- name: PostgreSQL | Database templates | Ensure PostgreSQL is running
+  service:
+    name: "{{ postgresql_service_name }}"
+    state: started
+
+- name: PostgreSQL | Database templates | Copy database template to remote server
+  become_user: "{{ postgresql_user }}"
+  become_method: su
+  copy:
+    src: "{{ item.template_dump_file }}"
+    backup: False
+    dest: "{{ item.remote_temp | default('/tmp/') }}"
+    force: True
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_user }}"
+  with_items:
+    - "{{ postgresql_template_databases }}"
+  register: templates_status
+
+- name: PostgreSQL | Database templates | Create empty template database
+  become_user: "{{ postgresql_user }}"
+  become_method: su
+  postgresql_db:
+    name: "{{ item.name }}"
+    template: "template0"
+  with_items:
+    - "{{ postgresql_template_databases }}"
+ # when: templates_status.changed
+
+- name: PostgreSQL | Database templates | Restore database to template
+  shell: sudo -u {{ postgresql_user }} pg_restore -O -d {{ item.name }} {{ item.name }}
+  args:
+      chdir: "{{ item.remote_temp | default('/tmp/') }}"
+  with_items:
+    - "{{ postgresql_template_databases }}"
+#  when: templates_status.changed
