@@ -22,4 +22,7 @@
   become_user: "{{ postgresql_user }}"
   become_method: su
   with_items: "{{ postgresql_databases }}"
+  notify: PostgreSQL | Handlers | Reload Service
+
+- meta: flush_handlers
 
