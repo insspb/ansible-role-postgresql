@@ -18,6 +18,17 @@
     - "{{ postgresql_template_databases }}"
   register: templates_status
 
+- name: PostgreSQL | Database templates | Drop old template database if exist
+  become_user: "{{ postgresql_user }}"
+  become_method: su
+  postgresql_db:
+    name: "{{ item.name }}"
+    state: absent
+    template: "template0"
+  with_items:
+    - "{{ postgresql_template_databases }}"
+  when: templates_status.changed
+
 - name: PostgreSQL | Database templates | Create empty template database
   become_user: "{{ postgresql_user }}"
   become_method: su
