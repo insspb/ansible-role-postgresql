@@ -40,7 +40,10 @@
   when: templates_status.changed
 
 - name: PostgreSQL | Database templates | Restore database to template
-  shell: sudo -u {{ postgresql_user }} pg_restore -O -d {{ item.name }} {{ item.name }}
+  become: true
+  become_user: "{{ postgresql_user }}"
+  become_method: su
+  shell: pg_restore -O -d {{ item.name }} {{ item.name }}
   args:
       chdir: "{{ item.remote_temp | default('/tmp/') }}"
   with_items:
