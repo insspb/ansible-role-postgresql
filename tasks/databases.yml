@@ -19,10 +19,10 @@
     port: "{{ item.port | default(omit) }}"
     template: "{{ item.template | default(omit) }}"
   when: postgresql_server and (postgresql_databases is defined)
+  register: db_created
   become_user: "{{ postgresql_user }}"
   become_method: su
   with_items: "{{ postgresql_databases }}"
   notify: PostgreSQL | Handlers | Reload Service
 
 - meta: flush_handlers
-
