@@ -1,5 +1,5 @@
 ---
-- name: PostgreSQL | Handlers | Reload Service
+- name: PostgreSQL | Handlers | Restart Service
   service:
-    state: reloaded
+    state: restarted
     name: "{{ postgresql_service_name }}"

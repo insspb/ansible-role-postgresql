@@ -21,7 +21,7 @@
     dest: "/etc/postgresql/{{ postgresql_version }}/main/environment"
     mode: 0644
     backup: yes
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
 
 - name: PostgreSQL | Configure | pg_ctl.conf
   become: yes
@@ -30,7 +30,7 @@
     dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_ctl.conf"
     mode: 0644
     backup: yes
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
 
 - name: PostgreSQL | Configure | pg_hba.conf
   become: yes
@@ -39,7 +39,7 @@
     dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf"
     mode: 0640
     backup: yes
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
 
 - name: PostgreSQL | Configure | pg_ident.conf
   become: yes
@@ -48,7 +48,7 @@
     dest: "/etc/postgresql/{{ postgresql_version }}/main/pg_ident.conf"
     mode: 0640
     backup: yes
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
 
 - name: PostgreSQL | Configure | postgresql.conf
   become: yes
@@ -57,7 +57,7 @@
     dest: "/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf"
     mode: 0644
     backup: yes
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
 
 - name: PostgreSQL | Configure | start.conf
   become: yes
@@ -66,7 +66,7 @@
     dest: "/etc/postgresql/{{ postgresql_version }}/main/start.conf"
     mode: 0644
     backup: yes
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
 
 - meta: flush_handlers
 

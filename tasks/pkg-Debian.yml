@@ -36,4 +36,4 @@
     - python-psycopg2
     - postgresql
   when: postgresql_server
-  notify: PostgreSQL | Handlers | Reload Service
+  notify: PostgreSQL | Handlers | Restart Service
