@@ -15,12 +15,14 @@ postgresql_log_path: "{{ postgresql_log_root }}/postgresql-main.log"
 postgresql_accepts_external_connections: yes
 
 postgresql_backup_enabled: no
+postgresql_backup_use_rotated: True
 postgresql_backup_system_user: ""
 postgresql_backup_local_run: "yes"
 postgresql_backup_additionflags: "--no-owner --no-acl"
 postgresql_backup_hostname: ""
 postgresql_backup_username: ""
 postgresql_backup_dir: "/var/lib/postgresql/backup/"
+postgresql_backup_scripts_dir: "/etc/scripts/"
 postgresql_backup_schema_only_list: ""
 postgresql_backup_custom_format: "yes"
 postgresql_backup_plain_format: "no"
@@ -28,6 +30,13 @@ postgresql_backup_globals: "yes"
 postgresql_backup_weekly_day: "7"
 postgresql_backup_keep_days: "14"
 postgresql_backup_keep_weeks: "4"
+postgresql_backup_job_user: "{{ postgresql_user }}"
+postgresql_backup_job_month: "*"
+postgresql_backup_job_weekday: "*"
+postgresql_backup_job_day: "*"
+postgresql_backup_job_hour: "0"
+postgresql_backup_job_minute: "0"
+postgresql_backup_job_disabled: False
 
 postgresql_locale_parts:
   - 'en_US' # Locale
