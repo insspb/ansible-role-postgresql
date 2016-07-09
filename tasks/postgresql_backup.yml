@@ -1,6 +1,4 @@
 ---
-- debug: var=postgresql_backup_job_user
-
 - name: PostgreSQL | Backup configuration | Create remote backup directory
   file:
     path: "{{ postgresql_backup_dir }}"
