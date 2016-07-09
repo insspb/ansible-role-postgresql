@@ -25,3 +25,7 @@
 #Create and check databases on server
 - include: databases.yml
   when: postgresql_server
+
+#Create backup task and backup directory
+- include: postgresql_backup.yml
+  when: postgresql_backup_enabled

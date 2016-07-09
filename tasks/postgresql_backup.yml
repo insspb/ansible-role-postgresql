@@ -1,0 +1,75 @@
+---
+- debug: var=postgresql_backup_job_user
+
+- name: PostgreSQL | Backup configuration | Create remote backup directory
+  file:
+    path: "{{ postgresql_backup_dir }}"
+    owner: "{{ postgresql_backup_job_user }}"
+    group: "{{ postgresql_backup_job_user }}"
+    mode: 0755
+    state: directory
+
+- name: PostgreSQL | Backup configuration | Create remote scripts directory
+  file:
+    path: "{{ postgresql_backup_scripts_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: PostgreSQL | Backup configuration | Create remote config file
+  template:
+    backup: yes
+    dest: "{{ postgresql_backup_scripts_dir }}/pg_backup.config"
+    owner: "{{ postgresql_backup_job_user }}"
+    group: "{{ postgresql_backup_job_user }}"
+    mode: 0755
+    src: "backup/pg_backup.config.j2"
+    
+- name: PostgreSQL | Backup configuration | Create remote backup script
+  copy:
+    dest: "{{ postgresql_backup_scripts_dir }}/pg_backup.sh"
+    owner: "{{ postgresql_backup_job_user }}"
+    group: "{{ postgresql_backup_job_user }}"
+    mode: 0755
+    src: "backup/pg_backup.sh"
+  when: "{{ postgresql_backup_use_rotated }} != True"
+
+- name: PostgreSQL | Backup configuration | Create remote rotated backup script
+  copy:
+    dest: "{{ postgresql_backup_scripts_dir }}/pg_backup_rotated.sh"
+    owner: "{{ postgresql_backup_job_user }}"
+    group: "{{ postgresql_backup_job_user }}"
+    mode: 0755
+    src: "backup/pg_backup_rotated.sh"
+  when: "{{ postgresql_backup_use_rotated }} == True"
+
+- name: PostgreSQL | Backup configuration | Create cronjob for backup job
+  cron:
+    name: "PostgreSQL backup job"
+    backup: no
+    month: "{{ postgresql_backup_job_month }}"
+    weekday: "{{ postgresql_backup_job_weekday }}"
+    day: "{{ postgresql_backup_job_day }}"
+    hour: "{{ postgresql_backup_job_hour }}"
+    minute: "{{ postgresql_backup_job_minute }}"
+    disabled: "{{ postgresql_backup_job_disabled }}"
+    state: present
+    user: "{{ postgresql_backup_job_user }}"
+    job: "{{ postgresql_backup_scripts_dir }}/pg_backup.sh"
+  when: "{{ postgresql_backup_use_rotated }} != True"
+
+- name: PostgreSQL | Backup configuration | Create cronjob for rotated backup job
+  cron:
+    name: "PostgreSQL rotated backup job"
+    backup: no
+    month: "{{ postgresql_backup_job_month }}"
+    weekday: "{{ postgresql_backup_job_weekday }}"
+    day: "{{ postgresql_backup_job_day }}"
+    hour: "{{ postgresql_backup_job_hour }}"
+    minute: "{{ postgresql_backup_job_minute }}"
+    disabled: "{{ postgresql_backup_job_disabled }}"
+    state: present
+    user: "{{ postgresql_backup_job_user }}"
+    job: "{{ postgresql_backup_scripts_dir }}/pg_backup_rotated.sh"
+  when: "{{ postgresql_backup_use_rotated }} == True"
