@@ -50,7 +50,7 @@ if [ ! $USERNAME ]; then
     USERNAME="postgres"
 fi;
 
-if [ ! $ADDITIONFLAGS ]; then
+if [[ ! $ADDITIONFLAGS ]]; then
     ADDITIONFLAGS=""
 fi;
 
