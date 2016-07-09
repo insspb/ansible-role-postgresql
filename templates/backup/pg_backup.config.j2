@@ -6,6 +6,12 @@
 # the script terminates.  Leave blank to skip check.
 BACKUP_USER=
 
+# Optional setting to run backup under postgre admin user, without network auth.
+LOCAL_RUN=yes
+
+# Optional setting for additional pg_dump and pg_dumpall flags
+ADDITIONFLAGS="--no-owner --no-acl"
+
 # Optional hostname to adhere to pg_hba policies.  Will default to "localhost" if none specified.
 HOSTNAME=
 
@@ -14,7 +20,7 @@ USERNAME=
 
 # This dir will be created if it doesn't exist.  This must be writable by the user the script is
 # running as.
-BACKUP_DIR=/home/backups/database/postgresql/
+BACKUP_DIR=/var/lib/postgresql/backup/
 
 # List of strings to match against in database name, separated by space or comma, for which we only
 # wish to keep a backup of the schema, not the data. Any database names which contain any of these
