@@ -16,7 +16,7 @@
 - name: PostgreSQL | Debian | Installation | Install client packages
   apt: 
     pkg: "{{ item }}" 
-    state: latest
+    state: present
   with_items:
     - postgresql-client-{{ postgresql_version }}
   when: postgresql_client
@@ -24,7 +24,7 @@
 - name: PostgreSQL | Debian | Installation | Install server packages
   apt: 
     pkg: "{{ item }}" 
-    state: latest
+    state: present
   with_items:
     - postgresql-{{ postgresql_version }}
     - postgresql-contrib-{{ postgresql_version }}
