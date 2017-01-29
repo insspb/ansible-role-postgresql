@@ -1,1 +1,40 @@
 ---
+
+- name: PostgreSQL | RedHat | Installation | Install Epel repository gpg key
+  rpm_key:
+    state: present
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+
+- name: PostgreSQL | RedHat | Installation | Install Epel repository
+  yum:
+    state: present
+    name: epel-release
+
+- name: PostgreSQL | RedHat | Installation | Add official repository
+  yum:
+    name: "{{ postgresql_yum_repository_url }}"
+    state: present
+
+- name: PostgreSQL | RedHat | Installation | Install dependencies
+  yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items: "{{ postgresql_install_dependencies }}"
+
+- name: PostgreSQL | RedHat | Installation | Install PostgreSQL
+  yum:
+    name: "{{ item }}"
+    state: latest
+  environment: "{{ postgresql_env }}"
+  with_items:
+    - "postgresql{{ postgresql_version_terse }}-server"
+    - "postgresql{{ postgresql_version_terse }}"
+    - "postgresql{{ postgresql_version_terse }}-contrib"
+
+- name: PostgreSQL | RedHat | Installation | PGTune
+  yum:
+    name: pgtune
+    state: latest
+  environment: "{{ postgresql_env }}"
+  when: postgresql_pgtune

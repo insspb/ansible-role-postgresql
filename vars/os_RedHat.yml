@@ -1,2 +1,7 @@
 ---
 postgresql_service_name: postgresql
+postgresql_install_dependencies:
+    - python-psycopg2
+    - python-pycurl
+    - glibc-common
+
